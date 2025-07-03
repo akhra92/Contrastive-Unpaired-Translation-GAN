@@ -4,11 +4,12 @@
 
 PyTorch implementation of unpaired image-to-image translation based on patchwise contrastive learning and adversarial learning, which was originally introduced by Taesung Park, on **Deepfashion** dataset from Kaggle. This model training is faster and less memory-intensive. In addition, this method can be extended to single image training, where each “domain” is only a *single* image.
 
-[Contrastive Learning for Unpaired Image-to-Image Translation](http://taesung.me/ContrastiveUnpairedTranslation/)  
+Use the following link to access the full project provided by the authors: [Contrastive Learning for Unpaired Image-to-Image Translation](http://taesung.me/ContrastiveUnpairedTranslation/)  
 
 ## Example Results
 
-### Unpaired Image-to-Image Translation
+Below are shown the results of the experiments. Given a sample image (Real A) and its unpaired target (Real B), the model generates a version of Real A image that is similar to Real B.
+
 | Real A        | Real B        | Fake B       |
 |--------------|---------------|--------------|
 | ![](imgs/033_real_A.png) | ![](imgs/033_real_B.png) | ![](imgs/033_fake_B.png) |
@@ -26,8 +27,8 @@ PyTorch implementation of unpaired image-to-image translation based on patchwise
 
 - Clone this repo:
 ```bash
-git clone https://github.com/taesungp/contrastive-unpaired-translation CUT
-cd CUT
+git clone https://github.com/akhra92/Contrastive-Unpaired-Translation-GAN
+cd Contrastive-Unpaired-Translation-GAN
 ```
 
 - Install PyTorch 1.1 and other dependencies (e.g., torchvision, visdom, dominate, gputil).
@@ -39,42 +40,38 @@ cd CUT
 
 ### CUT and FastCUT Training and Test
 
-- Download the `grumpifycat` dataset (Fig 8 of the paper. Russian Blue -> Grumpy Cats)
-```bash
-bash ./datasets/download_cut_dataset.sh grumpifycat
-```
-The dataset is downloaded and unzipped at `./datasets/grumpifycat/`.
+- Download your dataset and put it in a folder. This folder should have **train A**, **train B**, **test A**, and **test B** folders where A is a source domain, B is a target domain. Then model learns to generate fake A images which are similar to B.
 
 - To view training results and loss plots, run `python -m visdom.server` and click the URL http://localhost:8097.
 
 - Train the CUT model:
 ```bash
-python train.py --dataroot ./datasets/grumpifycat --name grumpycat_CUT --CUT_mode CUT
+python train.py --dataroot ./path-your-data-root --name custom_CUT --CUT_mode CUT
 ```
  Or train the FastCUT model
  ```bash
-python train.py --dataroot ./datasets/grumpifycat --name grumpycat_FastCUT --CUT_mode FastCUT
+python train.py --dataroot ./path-your-data-root --name custom_FastCUT --CUT_mode FastCUT
 ```
-The checkpoints will be stored at `./checkpoints/grumpycat_*/web`.
+The checkpoints will be stored at `./checkpoints/custom_*/web`.
 
 - Test the CUT model:
 ```bash
-python test.py --dataroot ./datasets/grumpifycat --name grumpycat_CUT --CUT_mode CUT --phase train
+python test.py --dataroot ./path-your-data-root --name custom_CUT --CUT_mode CUT --phase train
 ```
 
-The test results will be saved to a html file here: `./results/grumpifycat/latest_train/index.html`.
+The test results will be saved to a html file here: `./results/custom/latest_train/index.html`.
 
 ### SinCUT Single Image Unpaired Training
 
-To train SinCUT (single-image translation, shown in Fig 9, 13 and 14 of the paper), you need to
+To train SinCUT you need to
 
 1. set the `--model` option as `--model sincut`, which invokes the configuration and codes at `./models/sincut_model.py`, and
-2. specify the dataset directory of one image in each domain, such as the example dataset included in this repo at `./datasets/single_image_monet_etretat/`. 
+2. specify the dataset directory of one image in each domain `./datasets/single_image/`. 
 
 For example, to train a model for the [Etretat cliff (first image of Figure 13)](https://github.com/taesungp/contrastive-unpaired-translation/blob/master/imgs/singleimage.gif), please use the following command.
 
 ```bash
-python train.py --model sincut --name singleimage_monet_etretat --dataroot ./datasets/single_image_monet_etretat
+python train.py --model sincut --name singleimage --dataroot ./datasets/single_image
 ```
 
 or by using the experiment launcher script,
@@ -82,12 +79,10 @@ or by using the experiment launcher script,
 python -m experiments singleimage run 0
 ```
 
-For single-image translation, we adopt network architectural components of [StyleGAN2](https://github.com/NVlabs/stylegan2), as well as the pixel identity preservation loss used in [DTN](https://arxiv.org/abs/1611.02200) and [CycleGAN](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix/blob/master/models/cycle_gan_model.py#L160). In particular, we adopted the code of [rosinality](https://github.com/rosinality/stylegan2-pytorch), which exists at `models/stylegan_networks.py`.
-
 The training takes several hours. To generate the final image using the checkpoint,
 
 ```bash
-python test.py --model sincut --name singleimage_monet_etretat --dataroot ./datasets/single_image_monet_etretat
+python test.py --model sincut --name singleimage --dataroot ./datasets/single_image
 ```
 
 or simply
