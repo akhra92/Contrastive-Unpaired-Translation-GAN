@@ -2,23 +2,20 @@
 
 # Contrastive Unpaired Translation (CUT)
 
-We provide our PyTorch implementation of unpaired image-to-image translation based on patchwise contrastive learning and adversarial learning.  No hand-crafted loss and inverse network is used. Compared to [CycleGAN](https://github.com/junyanz/CycleGAN), our model training is faster and less memory-intensive. In addition, our method can be extended to single image training, where each “domain” is only a *single* image.
-
+PyTorch implementation of unpaired image-to-image translation based on patchwise contrastive learning and adversarial learning, which was originally introduced by Taesung Park, on **Deepfashion** dataset from Kaggle. This model training is faster and less memory-intensive. In addition, this method can be extended to single image training, where each “domain” is only a *single* image.
 
 [Contrastive Learning for Unpaired Image-to-Image Translation](http://taesung.me/ContrastiveUnpairedTranslation/)  
- [Taesung Park](https://taesung.me/), [Alexei A. Efros](https://people.eecs.berkeley.edu/~efros/), [Richard Zhang](https://richzhang.github.io/), [Jun-Yan Zhu](https://www.cs.cmu.edu/~junyanz/)<br>
-UC Berkeley and Adobe Research<br>
- In ECCV 2020
-
-
-<img src='imgs/patchnce.gif' align="right" width=960>
-
-<br><br><br>
 
 ## Example Results
 
 ### Unpaired Image-to-Image Translation
-<img src="imgs/results.gif" width="800px"/>
+| Real A        | Real B        | Fake B       |
+|--------------|---------------|--------------|
+| ![](imgs/033_real_A.png) | ![](imgs/033_real_B.png) | ![](imgs/033_fake_B.png) |
+| ![](imgs/035_real_A.png) | ![](imgs/035_real_B.png) | ![](imgs/035_fake_B.png) |
+| ![](imgs/037_real_A.png) | ![](imgs/037_real_B.png) | ![](imgs/037_fake_B.png) |
+| ![](imgs/049_real_A.png) | ![](imgs/049_real_B.png) | ![](imgs/049_fake_B.png) |
+
 
 ## Prerequisites
 - Linux or macOS
